@@ -3,6 +3,7 @@ package com.highbar.function;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Provides checked function wrappers.
@@ -30,6 +31,12 @@ public class Checked {
     return input -> safeRun(i -> {
       return predicate.test(i);
     }, input);
+  }
+
+  public static <T> Supplier<T> supplier(CheckedSupplier<T> supplier) {
+    return () -> safeRun(input -> {
+      return supplier.get();
+    }, null);
   }
 
   private static <I,O> O safeRun(CheckedFunction<I,O> function, I input) {
